@@ -1,6 +1,7 @@
 "use strict";
 
 var Rcon = require(__dirname + "/rcon");
+var RconGoldSource = require(__dirname + "/rcon_gs");
 var Widget = require(__dirname + "/widget");
 var db = require(__dirname + "/db");
 var fs = require("fs");
@@ -19,7 +20,11 @@ function RconServer(id, serverData) {
     /** @type {object} */
     this.serverData = serverData;
     /** @type {Rcon} */
-    this.con = new Rcon(serverData.host, serverData.rcon_port, this);
+    if (serverData.game === "cs16") {
+        this.con = new RconGoldSource(serverData.host, serverData.rcon_port, this);
+    } else {
+        this.con = new Rcon(serverData.host, serverData.rcon_port, this);
+    }
     /** @type {boolean} */
     this.connected = false;
     /** @type {number|null} */
